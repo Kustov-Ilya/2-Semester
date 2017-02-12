@@ -18,11 +18,10 @@ TString::TString(const TString& rhs)
 {
 	size_t Len = rhs.Size();
 	Data = new char[Len + 1];
-	for (int i = 0; i < Len; i++)
+	for (int i = 0; i < Len + 1; i++)
 	{
 		Data[i] = rhs.Data[i];
 	}
-	Data[Len] = '\0';
 }
 
 
@@ -34,11 +33,10 @@ TString::TString(const char * data)
 		Len++;
 	}
 	Data = new char[Len + 1];
-	for (int i = 0; i < Len; i++)
+	for (int i = 0; i < Len + 1; i++)
 	{
 		Data[i] = data[i];
 	}
-	Data[Len] = '\0';
 }
 
 
@@ -48,8 +46,10 @@ TString& TString::operator =(const TString& rhs)
 	if(Data != nullptr) delete[] Data;
 	size_t Len = rhs.Size();
 	Data = new char[Len + 1];
-	for (int i = 0; i < Len; i++) Data[i] = rhs.Data[i];
-	Data[Len] = '\0';
+	for (int i = 0; i < Len + 1; i++)
+	{
+		Data[i] = rhs.Data[i];
+	}
 	return *this;
 }
 
@@ -64,13 +64,12 @@ TString& TString::operator +=(const TString& rhs)
 	{
 		Data1[i] = Data[i];
 	}
-	for (int i = 0; i < Len2; i++)
+	for (int i = 0; i < Len2 + 1; i++)
 	{
 		Data1[Len1 + i] = rhs.Data[i];
 	}
 	delete[] Data;
 	Data = Data1;
-	Data[Len] = '\0';
 	return *this;
 }
 
