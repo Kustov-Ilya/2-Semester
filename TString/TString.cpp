@@ -195,11 +195,10 @@ void TString::LTrim(char symbol)
 		t++;
 	}
 	char * Data1 = new char[Len - t + 1];
-	for (int i = 0; i < Len - t; i++)
+	for (int i = 0; i < Len - t + 1; i++)
 	{
 		Data1[i] = Data[i + t];
 	}
-	Data1[Len - t] = '\0';
 	delete[] Data;
 	Data = Data1;
 }
