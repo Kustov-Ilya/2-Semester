@@ -56,7 +56,7 @@ TString& TString::operator =(const TString& rhs)
 
 TString& TString::operator +=(const TString& rhs)
 {
-	size_t Len1= TString(Data).Size();
+	size_t Len1= Size();
 	size_t Len2 = rhs.Size();
 	size_t Len = Len1 + Len2;
 	char * Data1 = new char[Len + 1];
@@ -76,7 +76,7 @@ TString& TString::operator +=(const TString& rhs)
 
 bool TString::operator ==(const TString& rhs) const
 {
-	size_t Len = TString(Data).Size();
+	size_t Len = Size();
 	if (Len != rhs.Size()) return false;
 	for (int i = 0; i < Len; i++)
 	{
@@ -89,10 +89,10 @@ bool TString::operator ==(const TString& rhs) const
 bool TString::operator <(const TString& rhs) const
 {
 	int length;
-	if (TString(rhs.Data).Size() > TString(this->Data).Size())
-		length = TString(rhs.Data).Size();
+	if (rhs.Size() > Size())
+		length = rhs.Size();
 	else
-		length = TString(Data).Size();
+		length = Size();
 	for (int i = 0; i<length; i++){
 		if (Data[i] == rhs.Data[i]) continue;
 		if (Data[i]<rhs.Data[i]) return true;
@@ -103,8 +103,8 @@ bool TString::operator <(const TString& rhs) const
 
 
 size_t TString::Find(const TString& substr) const{
-	int Len1 = TString(Data).Size();
-	int Len2 = TString(substr.Data).Size();
+	int Len1 = Size();
+	int Len2 = substr.Size();
 	if (Len2 > Len1) return -1;
 	int chek, t = 0, i = 0;
 	for (i; i < Len1 - Len2 + 1; i++){
@@ -131,7 +131,7 @@ size_t TString::Find(const TString& substr) const{
 
 void TString::Replace(char oldSymbol, char newSymbol)
 {
-	for (int i = 0; i < TString(Data).Size(); i++)
+	for (int i = 0; i < Size(); i++)
 		if (Data[i] == oldSymbol)
 		{
 			Data[i] = newSymbol;
@@ -168,7 +168,7 @@ char& TString::operator[](size_t index)
 
 void TString::RTrim(char symbol)
 {
-	int Len = TString(Data).Size();
+	int Len = Size();
 	int t = 0;
 	if (Data[Len - 1 - t] == symbol)
 	{
@@ -187,7 +187,7 @@ void TString::RTrim(char symbol)
 
 void TString::LTrim(char symbol)
 {
-	int Len = TString(Data).Size();
+	int Len = Size();
 	int t = 0;
 	if (Data[t] == symbol)
 	{
