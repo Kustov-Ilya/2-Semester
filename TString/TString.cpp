@@ -170,7 +170,7 @@ void TString::RTrim(char symbol)
 {
 	int Len = Size();
 	int t = 0;
-	if (Data[Len - 1 - t] == symbol)
+	while (Data[Len - 1 - t] == symbol)
 	{
 		t++;
 	}
@@ -189,7 +189,7 @@ void TString::LTrim(char symbol)
 {
 	int Len = Size();
 	int t = 0;
-	if (Data[t] == symbol)
+	while (Data[t] == symbol)
 	{
 		t++;
 	}
