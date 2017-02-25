@@ -34,7 +34,6 @@ Text *BreakString(std::string str){
 	size_t Poz = 0;
 	size_t EndPoz = 0;
 	Text *pH = nullptr;
-	//char Spase = ' ';
 	while (EndPoz <= End){
 		EndPoz = str.find(' ', Poz);
 		AddWord(&pH, str.substr(Poz, EndPoz - Poz));
