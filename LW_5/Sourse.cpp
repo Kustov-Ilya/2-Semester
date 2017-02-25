@@ -1,4 +1,5 @@
-#include"Class.h"
+#include"PAIR.h"
+#include"RATIONAL.h"
 
 int main(){
 	PAIR Pa1(4, 7);
