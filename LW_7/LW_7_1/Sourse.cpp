@@ -3,11 +3,36 @@
 
 using namespace std;
 
+bool Palindrom(string &str){
+	int len = str.size();
+	for (int i = 0; i < (len / 2); i++)
+	{
+		if (str[i] == str[len - 1 - i])
+		{
+			return true;
+		}
+		else{
+			return false;
+			break;
+		}
+	}
+}
+
+void Print(string str, bool check){
+	if (check)
+	{
+		cout << str << "  is palindrom" << endl;
+	}
+	else
+	{
+		cout << str << "  is'n palindrom" << endl;
+	}
+}
+
 int main(){
-	int n = 0, k=0;
-	char buf[128];
-	bool check = false;
-	int len;
+	bool check;
+	int n = 0;
+	string str;
 	char delim = '\n';
 	while (n < 1){
 		cout << "Enter number of strings: ";
@@ -15,35 +40,11 @@ int main(){
 		cin.clear();
 		cin.sync();
 	}
-	string *str = new string[5*sizeof(string)];
-	while (k < n){					//Чтение строк и добавление их в массив
-		cout << k+1 <<": ";
-		cin.getline(buf, delim);
-		str[k] = buf;
-		k++;
-	}
-	k = 0;
-	while (k < n) {					//Проверка на палиндром и вывод результата
-		len = str[k].size();
-		for (int i = 0; i < (len / 2); i++)
-		{
-			if (str[k][i] == str[k][len - 1 - i])
-			{
-				check = true;
-			}else{
-				check = false;
-				break;
-			}
-		}
-		if (check == true)
-		{
-			cout << str[k] << "  is palindrom" << endl;
-		}
-		else
-		{
-			cout << str[k] << "  is'n palindrom" << endl;
-		}
-		k++;
+	for (int i = 0; i < n; i++){
+		cout << i + 1 << ": ";
+		cin >> str;
+		check = Palindrom(str);
+		Print(str, check);
 	}
 	system("pause");
 	return 0;
