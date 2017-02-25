@@ -1,7 +1,7 @@
 #include"Head.h"
 
 int main(){
-	Text *pF;//указатель на первый эллемент структуры
+	Text *pF;//указатель на первый эллемент список структур
 	InitText(&pF);
 	int n = 0;
 	string WordFind;
@@ -24,7 +24,7 @@ int main(){
 		cin.get();
 		return 2;
 	}
-	while (1) {					//Чтение файла и добавление слов с структуру
+	while (1) {					//Чтение файла и добавление слов в список
 		if (file.eof()) break;
 		file >> buf;
 		Word = buf;
