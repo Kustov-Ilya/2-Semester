@@ -29,7 +29,7 @@ int AddWord(Text **Head, std::string str){
 	return 1;
 }
 
-Text *Break(std::string str){
+Text *BreakString(std::string str){
 	size_t End = str.length()-1;
 	size_t Poz = 0;
 	size_t EndPoz = 0;
@@ -65,7 +65,7 @@ int FindAndOut(Text *Head, const std::string str, const int n){
 			k += i;
 			int t = 0;
 			while (t <= k && Now != NULL){
-				std::cout << " " << Now->Wor;
+				std::cout << "  " << Now->Wor;
 				Now = Now->next;
 				if (t == i) std::cout << "(!!!)"; //Выделение слова, которое нашли
 				t++;
@@ -110,7 +110,7 @@ int main(){
 	int n = GetN();
 	int Check = 0;
 	while (!file.eof()){
-		Text *pF = Break(ReadString(file));
+		Text *pF = BreakString(ReadString(file));
 		Check += FindAndOut(pF, WordFind, n);
 		Clear(&pF);
 	}
