@@ -1,24 +1,13 @@
-#include<iostream>
-#include<string>
+#include"RealNum.h"
 
-using namespace std;
+RealNum::RealNum(){
+	Num = 0;
+}
 
-#ifndef MY_SYMBOL_H
-#define MY_SYMBOL_H
+double RealNum::Modul(){
+	return fabs(Num);
+}
 
-class RealNum{
-protected:
-	double Num;
-public:
-	virtual ~RealNum() = default;
-
-	RealNum();
-
-	RealNum(double num)
-		:Num(num){}
-
-	virtual double Modul();
-
-	virtual void Print();
-};
-#endif
+void RealNum::Print(){
+	cout << "RealNum: " << Num << " \nModul of RealNum: " << Modul() << endl;
+}
