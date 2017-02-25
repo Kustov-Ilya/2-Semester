@@ -1,4 +1,5 @@
-#include"Class.h"
+#include"RealNum.h"
+#include"ComplexNum.h"
 
 int main(){
 	RealNum Num(-6.345);
