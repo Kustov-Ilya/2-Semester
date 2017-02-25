@@ -1,5 +1,5 @@
-qwe
-re
-weqrt
-wer
-ert
+qwe   //Выводит
+re    //Выводит
+weqrt //Выводит
+wer  
+ert  
