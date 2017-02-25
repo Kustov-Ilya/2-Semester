@@ -1,6 +1,6 @@
-rer
-qw4e
+rer   //Выводит
+qw4e  //Выводит
 wer
 ert
-jy
-htf
+jy    //Выводит
+htf   //Выводит
