@@ -11,7 +11,7 @@ public:
 	ComplexNum(double num, double numi)
 		:RealNum(num), NumI(numi){};
 
-	double Modul();
+	virtual double Modul();
 
-	void Print();
+	virtual void Print();
 };
