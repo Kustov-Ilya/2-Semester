@@ -16,7 +16,7 @@ public:
 		:Numerator(a), Denominator(b){}
 
 	//Функция вычитания из a b
-	RATIONAL Subtraction(const RATIONAL &a, const RATIONAL &b);
+	virtual RATIONAL Subtraction(const RATIONAL &a, const RATIONAL &b);
 
 	//Функция умножения дробей
 	RATIONAL MultiplicDrob(const RATIONAL &a, const RATIONAL &b);
