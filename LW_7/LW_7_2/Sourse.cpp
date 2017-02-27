@@ -9,6 +9,7 @@ struct Text{
 };
 
 int AddWord(Text **Head, std::string str){
+	if (str[0] == '\n') return 0;
 	if (*Head == nullptr){
 		*Head = new Text;
 		(*Head)->Wor = str;
@@ -29,15 +30,31 @@ int AddWord(Text **Head, std::string str){
 	return 1;
 }
 
+bool SpecChar(const char sim){
+	if (sim == ' ' || sim == '!' || sim == '"' ||sim == '#' || 
+		sim == '$' || sim == '%' ||sim == '&' || sim == '(' || 
+		sim == ')' ||sim == '*' || sim == '+' || sim == ',' ||
+		sim == '-' || sim == '.' || sim == '/' ||sim == '_' || 
+		sim == '?' || sim == '=' ||sim == '[' || sim == ':' || 
+		sim == ';' ||sim == ']' || sim == '{' || sim == '}' || 
+		sim == '^' || sim == '`' || sim == '~' || sim == '\0' || 
+		sim == '\n' || sim == '\t' || sim == '\\' || sim == '\'' || 
+		sim == '\v')return 1;
+	return 0;
+}
+
 Text *BreakString(std::string str){
-	size_t End = str.length()-1;
+	size_t End = str.length()+1;
 	size_t Poz = 0;
 	size_t EndPoz = 0;
 	Text *pH = nullptr;
-	while (EndPoz <= End){
-		EndPoz = str.find(' ', Poz);
-		AddWord(&pH, str.substr(Poz, EndPoz - Poz));
-		Poz = EndPoz+1;
+	while (EndPoz != End){
+		if (SpecChar(str[EndPoz])){
+			AddWord(&pH, str.substr(Poz, EndPoz - Poz));
+			Poz = EndPoz + 1;
+		}
+		EndPoz++;
+		
 	}
 	return pH;
 }
