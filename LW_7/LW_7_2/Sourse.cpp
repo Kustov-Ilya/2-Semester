@@ -2,21 +2,29 @@
 #include <string>
 #include <fstream>
 
+struct Words
+{
+	std::string Word;
+	Words * prev;
+	Words * next;
+};
+
 class Text
 {
 public:
 	Text(){}
-	Text(std::string &str)
-		:Wor(str){}
-	~Text(){}
+	~Text(){
+		while (Wor != nullptr) {
+			Words * tmp = Wor->next;
+			delete Wor;
+			Wor = tmp;
+		}
+	}
 	void BreakString(std::string &str);
 	void AddWord(std::string &str);
 	bool FindAndOut(std::string &str, int n);
-	void Delete();
 private:
-	std::string Wor;
-	Text *next;
-	Text *prev;
+	Words *Wor;
 };
 std::string GetWordFind();
 bool SpecChar(const char sim);
@@ -24,7 +32,7 @@ std::string ReadString(std::fstream & file);
 int GetN();
 
 void Text::BreakString(std::string &str){
-	size_t End = str.length()+1;
+	size_t End = str.length() + 1;
 	size_t Poz = 0;
 	size_t EndPoz = 0;
 	while (EndPoz != End){
@@ -38,66 +46,59 @@ void Text::BreakString(std::string &str){
 
 void Text::AddWord(std::string &str){
 	if (str == "") return;
-	if (this->Wor == ""){
-		this->Wor = str;
+	if (Wor == nullptr){
+
+		Wor = new Words;
+		Wor->Word = str;
+		Wor->next = nullptr;
+		Wor->prev = nullptr;
 		return;
 	}
-	Text *now = this;
-	while (now->next!= nullptr) now=now->next;
-	now->next = new Text(str);
-	(now->next)->prev = now;
+	Words *Now = Wor;
+	while (Now->next != nullptr) Now = Now->next;
+	Now->next = new Words;
+	Now->next->Word = str;
+	Now->next->next = nullptr;
+	(Now->next)->prev = Now;
 }
 
 bool Text::FindAndOut(std::string &str, int n){
 	bool Che = false;
-	Text *FindWor = this;
-	while (FindWor != NULL){			//Поиск str слов в структуре. При нахождении
-		if (FindWor->Wor == str){		//нахождение и вывод интервала n
-				int k = n;
-				Text *Now = FindWor;
-				int i = 0;
-				while (i<k && Now->prev != NULL){
-					Now = Now->prev;
-					i++;
-				}
-				k += i;
-				int t = 0;
-				while (t <= k && Now != NULL){
-					std::cout << "  " << Now->Wor;
-					Now = Now->next;
-					if (t == i) std::cout << "(!!!)"; //Выделение слова, которое нашли
-					t++;
-				}
-				std::cout << std::endl;
-				Che = true;
+	while (this->Wor != nullptr){
+		if (this->Wor->Word == str){
+			int k = n;
+			int i = 0;
+			Words *Now = Wor;
+			while (i<k && Now->prev != nullptr){
+				Now = Now->prev;
+				i++;
 			}
-		FindWor = FindWor->next;
+			k += i;
+			int t = 0;
+			while (t <= k && Now != nullptr){
+				std::cout << "  " << Now->Word;
+				Now = Now->next;
+				if (t == i) std::cout << "(!!!)";
+				t++;
+			}
+			std::cout << std::endl;
+			Che = true;
 		}
-		if (Che == true) return true;
-		return false;
-}
-
-void Text::Delete(){
-	Text *now = this;
-	while (now->next != nullptr)
-	{
-		now = now->next;
-		delete now->prev;
+		this->Wor = this->Wor->next;
 	}
-	
-	delete now;
+	if (Che == true) return true;
+	return false;
 }
-
 
 bool SpecChar(const char sim){
-	if (sim == ' ' || sim == '!' || sim == '"' ||sim == '#' || 
-		sim == '$' || sim == '%' ||sim == '&' || sim == '(' || 
-		sim == ')' ||sim == '*' || sim == '+' || sim == ',' ||
-		sim == '-' || sim == '.' || sim == '/' ||sim == '_' || 
-		sim == '?' || sim == '=' ||sim == '[' || sim == ':' || 
-		sim == ';' ||sim == ']' || sim == '{' || sim == '}' || 
-		sim == '^' || sim == '`' || sim == '~' || sim == '\0' || 
-		sim == '\n' || sim == '\t' || sim == '\\' || sim == '\'' || 
+	if (sim == ' ' || sim == '!' || sim == '"' || sim == '#' ||
+		sim == '$' || sim == '%' || sim == '&' || sim == '(' ||
+		sim == ')' || sim == '*' || sim == '+' || sim == ',' ||
+		sim == '-' || sim == '.' || sim == '/' || sim == '_' ||
+		sim == '?' || sim == '=' || sim == '[' || sim == ':' ||
+		sim == ';' || sim == ']' || sim == '{' || sim == '}' ||
+		sim == '^' || sim == '`' || sim == '~' || sim == '\0' ||
+		sim == '\n' || sim == '\t' || sim == '\\' || sim == '\'' ||
 		sim == '\v')return true;
 	return false;
 }
@@ -113,7 +114,7 @@ std::string ReadString(std::fstream & file){
 }
 
 int GetN(){
-	int n=-1;
+	int n = -1;
 	while (n < 0){
 		std::cout << "Enter n: ";
 		std::cin >> n;
@@ -140,7 +141,6 @@ int main(){
 		Text *TextS = new Text();
 		TextS->BreakString(ReadString(file));
 		Check += TextS->FindAndOut(WordFind, n);
-		TextS->Delete();
 	}
 	if (Check == 0) std::cout << "Word don't found" << std::endl;
 	file.close();
