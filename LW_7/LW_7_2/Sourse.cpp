@@ -2,13 +2,6 @@
 #include <string>
 #include <fstream>
 
-struct Words
-{
-	std::string Word;
-	Words * prev;
-	Words * next;
-};
-
 class Text
 {
 public:
@@ -20,18 +13,23 @@ public:
 			Wor = tmp;
 		}
 	}
-	void BreakString(std::string &str);
-	void AddWord(std::string &str);
-	bool FindAndOut(std::string &str, int n);
+	void BreakString(const std::string  &str);
+	void AddWord(const std::string  &str);
+	bool FindAndOut(const std::string &str, const int n);
 private:
-	Words *Wor;
+	struct Words
+	{
+		std::string Word;
+		Words * prev;
+		Words * next;
+	} *Wor;
 };
 std::string GetWordFind();
 bool SpecChar(const char sim);
 std::string ReadString(std::fstream & file);
 int GetN();
 
-void Text::BreakString(std::string &str){
+void Text::BreakString(const std::string &str){
 	size_t End = str.length() + 1;
 	size_t Poz = 0;
 	size_t EndPoz = 0;
@@ -44,7 +42,7 @@ void Text::BreakString(std::string &str){
 	}
 }
 
-void Text::AddWord(std::string &str){
+void Text::AddWord(const std::string &str){
 	if (str == "") return;
 	if (Wor == nullptr){
 
@@ -62,7 +60,7 @@ void Text::AddWord(std::string &str){
 	(Now->next)->prev = Now;
 }
 
-bool Text::FindAndOut(std::string &str, int n){
+bool Text::FindAndOut(const std::string &str, const int n){
 	bool Che = false;
 	while (this->Wor != nullptr){
 		if (this->Wor->Word == str){
