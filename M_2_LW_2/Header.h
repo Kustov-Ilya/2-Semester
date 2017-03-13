@@ -112,6 +112,8 @@ public:
 	
 	TNode * Find(const value_type & value)
 	{
+		if (Root == NULL)
+			throw TNotFoundException("\nTree hasn't elements");
 		TNode * curNode = Root;
 		do
 		{
@@ -122,7 +124,7 @@ public:
 			else
 				curNode = curNode->Left;
 		} while (curNode);
-		throw TNotFoundException("\nelement not found");
+		throw TNotFoundException("\nElement not found");
 	}
 
 	friend std::ostream& operator << (std::ostream & out, const TBinaryTree& tree);
