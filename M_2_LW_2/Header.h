@@ -112,7 +112,7 @@ public:
 	
 	TNode * Find(const value_type & value)
 	{
-		if (Root == NULL)
+		if (Root == nullptr)
 			throw TNotFoundException("\nTree hasn't elements");
 		TNode * curNode = Root;
 		do
