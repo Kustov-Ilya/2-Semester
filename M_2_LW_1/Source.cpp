@@ -11,8 +11,9 @@ bool BoolFromString(const char * data) {
 }
 
 int IntFromString(const char * data) {
-	int Elem;
 	bool Minus = false;
+	bool Symbol = false;
+	int Elem;
 	int Poz = 0;
 	double Rez = 0.;
 	if (data[0] == '-' || data[0] == '+') {
@@ -21,17 +22,21 @@ int IntFromString(const char * data) {
 		}
 		Poz++;
 	}
-	while (data[Poz] && data[Poz] != ',' && data[Poz] != '.') {
-		if (48 <= data[Poz] && 57 >= data[Poz]) Elem= data[Poz] - 48;
-		else throw UnknownValue();
-		Rez = Rez * 10 + Elem;
-		Poz++;
-	}
-	Poz++;
 	while (data[Poz]) {
-		if(!(48 <= data[Poz] && 57 >= data[Poz]))
+		if (48 <= data[Poz] && 57 >= data[Poz])
+		{
+			Elem = data[Poz] - 48;
+			Poz++;
+		}
+		else if ((data[Poz] == '.' || data[Poz] == ',') && Symbol == false) {
+			Poz++;
+			Symbol = true;
+		}
+		else
 			throw UnknownValue();
-		Poz++;
+		if (Symbol == false) {
+			Rez = Rez * 10 + Elem;
+		}
 	}
 	if (Rez > 2147483647.0) throw BigLen();
 	int EndRez = static_cast<int>(Rez);
@@ -119,11 +124,12 @@ int main() {
 		q.what();
 	}
 	try {
-		IntFromString("12134.1243.1341");
+		IntFromString("12134.1243,1");
 	}
 	catch (Exception &q) {
 		q.what();
 	}
+	IntFromString("12134.12431341");
 	system("pause");
 	return 0;
 }
