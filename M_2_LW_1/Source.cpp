@@ -27,6 +27,12 @@ int IntFromString(const char * data) {
 		Rez = Rez * 10 + Elem;
 		Poz++;
 	}
+	Poz++;
+	while (data[Poz]) {
+		if(!(48 <= data[Poz] && 57 >= data[Poz]))
+			throw UnknownValue();
+		Poz++;
+	}
 	if (Rez > 2147483647.0) throw BigLen();
 	int EndRez = static_cast<int>(Rez);
 	if (Minus == true) return EndRez*-1;
@@ -73,15 +79,6 @@ int FloatFromString(const char * data) {
 }
 
 int main() {
-	char r = ' ';
-	try {
-		CharToNum(r);
-	}
-	catch (Exception &q) {
-		q.what();
-	}
-
-
 	char check1[] = "true";
 	bool CheCheck = BoolFromString(check1);
 	char check2[] = "wqe";
@@ -117,6 +114,12 @@ int main() {
 	}
 	try {
 		FloatFromString("-023434e.4e");
+	}
+	catch (Exception &q) {
+		q.what();
+	}
+	try {
+		IntFromString("12134.1243.1341");
 	}
 	catch (Exception &q) {
 		q.what();
