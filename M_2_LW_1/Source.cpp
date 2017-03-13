@@ -17,67 +17,56 @@ bool BoolFromString(const char * data) {
 
 int IntFromString(const char * data) {
 	bool Minus = false;
-	int FirstPoz = 0;
 	int Poz = 0;
-	if (data[0] == '-') { 
-		Minus = true;
-		FirstPoz++;
-	}
-	if (data[0] == '+') FirstPoz++;
-	while (data[FirstPoz + Poz]) {
-		if (data[FirstPoz + Poz] == '0' && Poz == 0) FirstPoz++;
-		else if(data[FirstPoz + Poz]=='.'|| data[FirstPoz + Poz]==',')
-		{
-			break;
-		}
-		else Poz++;
-	}
-	if (Poz > 10) throw BigLen();
 	double Rez = 0.;
-	for (int i = 0; i < Poz; i++) {
-		if (CharToNum(data[FirstPoz + i])) {
-			Rez += CharToNum(data[FirstPoz + i])*pow(10, Poz-i-1);
+	if (data[0] == '-' || data[0] == '+') {
+		if (data[0] == '-') {
+			Minus = true;
 		}
+		Poz++;
+	}
+	while (data[Poz] && data[Poz] != ',' && data[Poz] != '.') {
+		Rez = Rez * 10 + CharToNum(data[Poz]);
+		Poz++;
 	}
 	if (Rez > 2147483647.0) throw BigLen();
-	int RezEnd = static_cast<int>(Rez);
-	if (Minus == true) return RezEnd*-1;
-	return RezEnd;
+	int EndRez = static_cast<int>(Rez);
+	if (Minus == true) return EndRez*-1;
+	return EndRez;
 }
 
 int FloatFromString(const char * data) {
 	bool Minus = false;
-	int FirstPoz = 0;
+	bool real = false;
 	int Poz = 0;
-	if (data[0] == '-') {
-		Minus = true;
-		FirstPoz++;
-	}
-	if (data[0] == '+') FirstPoz++;
-	while (data[FirstPoz + Poz]) {
-		if (data[FirstPoz + Poz] == '0' && Poz == 0) FirstPoz++;
-		else if (data[FirstPoz + Poz] == '.' || data[FirstPoz + Poz] == ',')
-		{
-			break;
-		}
-		else Poz++;
-	}
-	if (Poz > 10) throw BigLen();
+	int Num = 0;
 	double Rez = 0.;
-	for (int i = 0; i < Poz; i++) {
-		if (CharToNum(data[FirstPoz + i])) {
-			Rez += CharToNum(data[FirstPoz + i])*pow(10, Poz - i - 1);
+	if (data[0] == '-' || data[0] == '+') {
+		if (data[0] == '-') {
+			Minus = true;
 		}
+		Poz++;
 	}
-	for (int i = 1; data[FirstPoz+Poz+i]; i++)
-	{
-		double u = pow(10, -i);
-		Rez += CharToNum(data[FirstPoz + i])/pow(10, i);
+	while (data[Poz]) {
+		if (data[Poz] != '.'&&data[Poz] != ',') {
+			if (real == false) {
+				Rez = Rez * 10 + CharToNum(data[Poz]);
+			}
+			else {
+				Num++;
+				Rez += CharToNum(data[Poz])/pow(10, Num);
+			}
+			Poz++;
+		}
+		else {
+			real = true;
+			Poz++;
+		}
 	}
 	if (Rez > 2147483647.0) throw BigLen();
-	float RezEnd = static_cast<float>(Rez);
-	if (Minus == true) return RezEnd*-1;
-	return RezEnd;
+	float EndRez = static_cast<float>(Rez);
+	if (Minus == true) return EndRez*-1;
+	return EndRez;
 }
 
 int main() {
@@ -85,8 +74,8 @@ int main() {
 	try {
 		CharToNum(r);
 	}
-	catch(UnknownValue &q){
-		std::cout << "Unknown Value" << std::endl;
+	catch (Exception &q) {
+		q.what();
 	}
 
 
@@ -96,8 +85,8 @@ int main() {
 	try {
 		BoolFromString("wer");
 	}
-	catch (UnknownValue &q) {
-		std::cout << "Unknown Value" << std::endl;
+	catch (Exception &q) {
+		q.what();
 	}
 
 
@@ -105,14 +94,14 @@ int main() {
 	try {
 		IntFromString("-02343457564565.4");
 	}
-	catch (BigLen &q) {
-		std::cout << "Big Len" << std::endl;
+	catch (Exception &q) {
+		q.what();
 	}
 	try {
 		IntFromString("-023434e.4");
 	}
-	catch (UnknownValue &q) {
-		std::cout << "Unknown Value" << std::endl;
+	catch (Exception &q) {
+		q.what();
 	}
 
 
@@ -120,14 +109,14 @@ int main() {
 	try {
 		FloatFromString("-02343457564565.4");
 	}
-	catch (BigLen &q) {
-		std::cout << "Big Len" << std::endl;
+	catch (Exception &q) {
+		q.what();
 	}
 	try {
 		FloatFromString("-023434e.4e");
 	}
-	catch (UnknownValue &q) {
-		std::cout << "Unknown Value" << std::endl;
+	catch (Exception &q) {
+		q.what();
 	}
 	system("pause");
 	return 0;
