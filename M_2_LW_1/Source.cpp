@@ -2,11 +2,6 @@
 #include <iostream>
 #include <exception>
 
-int CharToNum(char ch) {
-	if (48 <= ch && 57 >= ch) return ch - 48;
-	else throw UnknownValue();
-}
-
 bool BoolFromString(const char * data) {
 	if (strcmp(data, "true")==0 || strcmp(data, "1")==0)
 		return true;
@@ -16,6 +11,7 @@ bool BoolFromString(const char * data) {
 }
 
 int IntFromString(const char * data) {
+	int Elem;
 	bool Minus = false;
 	int Poz = 0;
 	double Rez = 0.;
@@ -26,7 +22,9 @@ int IntFromString(const char * data) {
 		Poz++;
 	}
 	while (data[Poz] && data[Poz] != ',' && data[Poz] != '.') {
-		Rez = Rez * 10 + CharToNum(data[Poz]);
+		if (48 <= data[Poz] && 57 >= data[Poz]) Elem= data[Poz] - 48;
+		else throw UnknownValue();
+		Rez = Rez * 10 + Elem;
 		Poz++;
 	}
 	if (Rez > 2147483647.0) throw BigLen();
@@ -36,6 +34,7 @@ int IntFromString(const char * data) {
 }
 
 int FloatFromString(const char * data) {
+	int Elem;
 	bool Minus = false;
 	bool real = false;
 	int Poz = 0;
@@ -50,11 +49,15 @@ int FloatFromString(const char * data) {
 	while (data[Poz]) {
 		if (data[Poz] != '.'&&data[Poz] != ',') {
 			if (real == false) {
-				Rez = Rez * 10 + CharToNum(data[Poz]);
+				if (48 <= data[Poz] && 57 >= data[Poz]) Elem = data[Poz] - 48;
+				else throw UnknownValue();
+				Rez = Rez * 10 + Elem;
 			}
 			else {
 				Num++;
-				Rez += CharToNum(data[Poz])/pow(10, Num);
+				if (48 <= data[Poz] && 57 >= data[Poz]) Elem = data[Poz] - 48;
+				else throw UnknownValue();
+				Rez += Elem/pow(10, Num);
 			}
 			Poz++;
 		}
