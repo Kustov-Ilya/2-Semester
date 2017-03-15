@@ -74,7 +74,6 @@ public:
 
 	TVector(const TVector& rhs)
 	{
-		if (Ptr != nullptr) delete[] Ptr;
 		InternalCapacity = rhs.InternalCapacity;
 		Count = rhs.Count;
 		Ptr = new value_type[InternalCapacity];
@@ -133,25 +132,25 @@ public:
 
 	reference front()
 	{
-		Check();
+		this->Check();
 		return Ptr[0];
 	}
 
 	const_reference front() const
 	{
-		Check();
+		this->Check();
 		return Ptr[0];
 	}
 
 	reference back()
 	{
-		Check();
+		this->Check();
 		return Ptr[Count - 1];
 	}
 
 	const_reference back() const
 	{
-		Check();
+		this->Check();
 		return Ptr[Count - 1];
 	}
 
@@ -164,7 +163,7 @@ public:
 
 	void pop_back()
 	{
-		Check();
+		this->Check();
 		Count--;
 	}
 
