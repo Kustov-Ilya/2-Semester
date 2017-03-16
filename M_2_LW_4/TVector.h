@@ -198,9 +198,10 @@ public:
 	iterator insert(iterator pos, const value_type& value)
 	{
 		size_type k = pos - Ptr;
+		if (Count == InternalCapacity)
+			this->reserve(InternalCapacity * 2);
 		Count++;
 		size_type count = Count-1;
-		this->reserve(Count);
 		for (count; count > k; count--) {
 			Ptr[count] = Ptr[count - 1];
 		}
@@ -212,9 +213,10 @@ public:
 	{
 		if (pos > Ptr + Count)  throw std::out_of_range("Invalide value of pos\n");
 		size_type k = pos - Ptr;
+		if (Count == InternalCapacity)
+			this->reserve(InternalCapacity * 2);
 		Count+=count;
 		size_type Num = Count - 1;
-		this->reserve(Count);
 		for (Num; Num > k; Num--) {
 			Ptr[Num] = Ptr[Num - count];
 		}
