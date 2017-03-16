@@ -83,6 +83,7 @@ public:
 	TVector& operator=(const TVector& rhs)
 	{
 		if (this == &rhs) return *this;
+		if (Ptr != nullptr) delete[] Ptr;
 		InternalCapacity = rhs.InternalCapacity;
 		Count = rhs.Count;
 		Ptr = new value_type[InternalCapacity];
