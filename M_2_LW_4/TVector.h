@@ -98,7 +98,7 @@ public:
 			Ptr[Count] = value;
 		}
 		else {
-			this->reserve(InternalCapacity + 1);
+			this->reserve(InternalCapacity * 2);
 			Count++;
 			Ptr[Count-1] = value;
 		}
