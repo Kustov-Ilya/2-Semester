@@ -58,7 +58,7 @@ public:
 
 class RAII 
 {
-	TNotCopyable *Raii; //Stores the address of the object
+	TNotCopyable *Raii;
 public:
 	RAII(TNotCopyable *Addr)
 		:Raii(Addr){}
