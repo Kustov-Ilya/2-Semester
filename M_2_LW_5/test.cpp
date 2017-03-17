@@ -7,7 +7,7 @@ int main()
 	{
 		TNotCopyable obj;
 
-		RAII obiadr(&obj);
+		RAII objadr(&obj);
 
 		obj.OpenToWrite("someFile.txt");
 
