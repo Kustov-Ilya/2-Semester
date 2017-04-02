@@ -34,7 +34,7 @@ template <class T, std::size_t N> struct TArray {
 	TArray& operator= (std::initializer_list<T> data){
 		if (Ptr) delete[] Ptr;
 		Ptr = new value_type[N];
-		memcpy(begin(), data.begin(), sizeof(init));
+		memcpy(begin(), data.begin(), sizeof(data));
 		Num = data.size();
 		return *this;
 	}
