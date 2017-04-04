@@ -9,39 +9,26 @@ template <class T, std::size_t N> struct TArray {
 	using reference = value_type&;
 	using const_reference = const value_type&;
 	using const_pointer = const T*;
-	size_type Num = 0;
-	value_type * Ptr;
+	value_type Ptr[N];
 	using iterator = value_type *;
 
 
-	TArray(){
-		Ptr = new value_type[N];
-	}
+	TArray(){}
 
 
-	~TArray(){
-		delete[] Ptr;
-	}
+	~TArray(){}
 
 
 	TArray(std::initializer_list<T> data){
-		Ptr = new value_type[N];
-		memcpy(begin(), data.begin(), sizeof(data));
-		Num = data.size();
+		int i = 0;
+		for (auto & dat : data) {
+			Ptr[i] = dat;
+			++i;
+		}
 	}
-
-
-	TArray& operator= (std::initializer_list<T> data){
-		if (Ptr) delete[] Ptr;
-		Ptr = new value_type[N];
-		memcpy(begin(), data.begin(), sizeof(data));
-		Num = data.size();
-		return *this;
-	}
-
 
 	size_type size() const throw(){
-		return Num;
+		return N;
 	}
 
 
@@ -51,7 +38,7 @@ template <class T, std::size_t N> struct TArray {
 
 
 	bool empty() const throw(){
-		return Num == 0;
+		return N == 0;
 	}
 
 
@@ -66,13 +53,13 @@ template <class T, std::size_t N> struct TArray {
 
 
 	reference at(size_type index){
-		if (index <= Num && index >= 0) return Ptr[index];
+		if (index <= N && index >= 0) return Ptr[index];
 		throw std::out_of_range("Invalide Value\n");
 	}
 
 
 	const_reference at(size_type index) const{
-		if (index <= Num && index >= 0) return Ptr[index];
+		if (index <= N && index >= 0) return Ptr[index];
 		throw std::out_of_range("Invalide Value\n");
 	}
 
@@ -121,13 +108,11 @@ template <class T, std::size_t N> struct TArray {
 		
 		for (size_type i = 0 ; i < N; ++i)
 			Ptr[i] = value;
-		Num = N;
 	}
 
 
 	void swap(TArray<T, N> & x) throw(){
 		std::swap(Ptr, x.Ptr);
-		std::swap(Num, x.Num);
 	}
 
 };
