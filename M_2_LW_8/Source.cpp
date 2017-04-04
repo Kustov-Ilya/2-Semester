@@ -3,10 +3,10 @@
 
 template<class IT>
 void sort(IT beg, IT end) {
-	while (beg < --end) {
-		for (IT i = beg; i != end; ++i) {
-			if (*(i + 1) < *i) {
-				std::swap(*i, *(i + 1));
+	for (IT i = beg; i != end; ++i) {
+		for (IT j = beg; j != end; ++j) {
+			if ((*i) < (*j)) {
+				std::swap((*i), (*j));
 			}
 		}
 	}
