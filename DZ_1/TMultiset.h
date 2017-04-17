@@ -278,7 +278,7 @@ public:
 	TMultiset& operator= (const TMultiset& x) {
 		if (x.Root == nullptr)
 			throw VoidValue("Myltiset is empty");
-			clear();
+	        clear();
 		TMultiset tmp(x);
 		return tmp;
 	}
