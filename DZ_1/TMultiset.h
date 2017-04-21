@@ -290,13 +290,14 @@ public:
 	TMultiset& operator= (const TMultiset& x) {
 		if (x.Root == nullptr)
 			throw VoidValue("Myltiset is empty");
-		clear();
 		TMultiset tmp(x);
+		if (Root == x.Root) return tmp;
+		clear();
 		return tmp;
 	}
 
 	TMultiset& operator= (std::initializer_list<value_type> il) {
-		clear();
+		if (Root) clear();
 		TMultiset tmp(il);
 		return tmp;
 	}
