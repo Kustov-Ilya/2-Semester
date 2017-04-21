@@ -3,7 +3,6 @@
 #include<initializer_list>
 #include<string>
 #include<exception>
-#include<set>
 
 struct VoidValue
 	: public std::exception
@@ -12,14 +11,6 @@ struct VoidValue
 		: std::exception(message){}
 };
 
-
-template<class T>
-class Less {
-public:
-	bool operator()(const T &a, const T &b) {
-		return a > b;
-	}
-};
 
 
 template<class T, class Compare = std::less<>>
