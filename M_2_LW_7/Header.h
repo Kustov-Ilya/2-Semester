@@ -17,6 +17,7 @@ public:
 	using const_reference = const value_type&;
 
 private:
+	
 	value_type * Ptr;
 	size_type Count;
 	size_type InternalCapacity;
