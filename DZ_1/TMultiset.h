@@ -202,6 +202,7 @@ private:
 			if (comp(tmp->Data, rhs->Data)) {
 				if (tmp->Right&&tmp->Right != End) tmp = tmp->Right;
 				else {
+					DelEnd();
 					rhs->Prev = tmp;
 					tmp->Right = rhs;
 					SetEnd();
@@ -431,42 +432,45 @@ public:
 		if (position.Ptr->Nom > 1) {
 			position.Ptr->Nom--;
 			Size--;
+			return it;
 		}
-		else {
-			if (erase(*position) == 0) return end();
-		}
-		return it;
-	}
-	
-	size_type erase(const value_type& val) {
-		Node * tmp = FindNode(val);
-		if (tmp == nullptr) return 0;
-		size_type Num = tmp->Nom;
-		Size -= Num;
 		Node *tmpL = nullptr;
 		Node *tmpR = nullptr;
-		if (tmp->Right) {
-				tmpR = tmp->Right;
-				tmp->Right = nullptr;
+		if (position.Ptr->Right) {
+			tmpR = position.Ptr->Right;
+			position.Ptr->Right = nullptr;
 		}
-		if (tmp->Left) {
-			tmpL = tmp->Left;
-			tmp->Left = nullptr;
+		if (position.Ptr->Left) {
+			tmpL = position.Ptr->Left;
+			position.Ptr->Left = nullptr;
 		}
-		if (tmp==Root) {
+		if (position.Ptr == Root) {
 			delete Root;
 			Root = nullptr;
 		}
 		else {
-			if (comp(tmp->Prev->Data, tmp->Data)) tmp->Prev->Right = nullptr;
-			else tmp->Prev->Left = nullptr;
-			tmp->Prev = nullptr;
-			delete tmp;
+			if (comp(position.Ptr->Prev->Data, *position))
+				position.Ptr->Prev->Right = nullptr;
+			else position.Ptr->Prev->Left = nullptr;
+			position.Ptr->Prev = nullptr;
+			delete position.Ptr;
 		}
 		InsertBranch(tmpL);
 		InsertBranch(tmpR);
 		if (End == nullptr) SetEnd();
-		return Num;
+		return it;
+	}
+	
+	size_type erase(const value_type& val) {
+		Iterator it = find(val);
+		if (it == end()) return 0;
+		size_type Num = it.Ptr->Nom;
+		for (size_type i = Num; 0 < i; --i) {
+			Iterator delet = it;
+			++it;
+			erase(delet);
+		} 
+			return Num;
 	}
 
 	iterator  erase(const_iterator &first, const_iterator &last) {
