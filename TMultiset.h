@@ -427,11 +427,11 @@ public:
 	iterator  erase(const_iterator position) {
 		if (position.Ptr == nullptr) throw VoidValue("Iterator does not exist");
 		Iterator it = position;
+		Size--;
 		if (it == end()) return end();
 		++it;
 		if (position.Ptr->Nom > 1) {
 			position.Ptr->Nom--;
-			Size--;
 			return it;
 		}
 		Node *tmpL = nullptr;
