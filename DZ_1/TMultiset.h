@@ -45,6 +45,11 @@ public:
 			if (Right != nullptr)
 				delete Right;
 		}
+
+		bool EmptyNode() {
+			return (this == nullptr);
+		}
+
 		friend class TMultiset;
 
 	};
@@ -182,15 +187,20 @@ private:
 	size_type Size;
 	key_compare comp;
 
-
-
 	void InsertBranch(Node *rhs) {
 		if (rhs == nullptr) return;
-		if (!Root) {
+			if (!Root) {
 			rhs->Prev = nullptr;
 			Root = rhs;
 			return;
 		}
+		if (rhs->Nom == 0) {
+			Node *tmp = Root;
+			while (tmp->Right) tmp = tmp->Right;
+			tmp->Right = rhs;
+			rhs->Prev = tmp;
+			return;
+			}
 		Node* tmp = Root;
 		while (tmp) {
 			if (comp(tmp->Data, rhs->Data)) {
@@ -248,7 +258,7 @@ private:
 			throw VoidValue("Myltiset is empty");
 		Node *tmp = Root;
 		while (tmp&&tmp->Nom!=0) {
-			if (!comp(val, tmp->Data) && !comp(tmp->Data, val)) {
+			if (!comp(val, tmp->Data) &&!comp(tmp->Data, val)) {
 				return tmp;
 			}
 			if (comp(tmp->Data, val)) tmp = tmp->Right;
@@ -262,24 +272,26 @@ private:
 
 public:
 
-	explicit TMultiset(const key_compare& comp = key_compare())
-		:Root(nullptr), Size(0) {}
-	
-	TMultiset(const TMultiset& x, const key_compare& comp = key_compare())
+	explicit TMultiset(const key_compare& compare = key_compare())
 		:Root(nullptr), Size(0) {
+		comp = compare;
+	}
+	
+	TMultiset(const TMultiset& x, const key_compare& compare = key_compare())
+		:TMultiset() {
 		if (x.Root == nullptr)
 			throw VoidValue("Myltiset is empty");
 		InsertTree(x.Root);
 	}
 
-	TMultiset(std::initializer_list<value_type> il, const key_compare& comp = key_compare())
+	TMultiset(std::initializer_list<value_type> il, const key_compare& compare = key_compare())
 		:TMultiset() {
 		insert(il.begin(), il.end());
 	}
 
 	template<class InputIterator>
-	TMultiset(InputIterator first, InputIterator last, const key_compare& comp = key_compare())
-		: Root(nullptr), Size(0) {
+	TMultiset(InputIterator first, InputIterator last, const key_compare& compare = key_compare())
+		:TMultiset() {
 		for (first; first != last; ++first) Insert(*first);
 	}
 
@@ -420,7 +432,13 @@ public:
 		Iterator it = position;
 		if (it == end()) return end();
 		++it;
-		if (erase(*position) == 0) return end();
+		if (position.Ptr->Nom > 1) {
+			position.Ptr->Nom--;
+			Size--;
+		}
+		else {
+			if (erase(*position) == 0) return end();
+		}
 		return it;
 	}
 	
@@ -432,8 +450,8 @@ public:
 		Node *tmpL = nullptr;
 		Node *tmpR = nullptr;
 		if (tmp->Right) {
-			tmpR = tmp->Right;
-			tmp->Right = nullptr;
+				tmpR = tmp->Right;
+				tmp->Right = nullptr;
 		}
 		if (tmp->Left) {
 			tmpL = tmp->Left;
@@ -449,35 +467,40 @@ public:
 			tmp->Prev = nullptr;
 			delete tmp;
 		}
-		InsertBranch(tmpR);
 		InsertBranch(tmpL);
+		InsertBranch(tmpR);
+		if (End == nullptr) SetEnd();
 		return Num;
 	}
 
 	iterator  erase(const_iterator &first, const_iterator &last) {
-		Iterator it = first;
 		Iterator delet;
+		if (begin() == first  && end() == last) {
+			clear();
+			return delet;
+		} 
+		Iterator it = first;
 		if (end() != last)
 		{
 			while (it != last) {
 				delet = it;
-				while(it == delet) ++it;
-				erase(delet);
+				it = erase(delet);
 			}
-			return it;
 		}
 		else
 		{
 			while (it!=end())
 			{
 				delet = it;
-				while(it==delet) ++it;
-				erase(delet);
+				it = erase(delet);
 			}
-			delete End;
-			Root = nullptr;
-			End = nullptr;
+			if (Root->Nom == 0) {
+				delete End;
+				Root = nullptr;
+				End = nullptr;
+			}
 		}
+		return it;
 	}
 
 	void insert(std::initializer_list<value_type> il) {
