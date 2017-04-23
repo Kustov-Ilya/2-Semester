@@ -299,16 +299,19 @@ public:
 	TMultiset& operator= (const TMultiset& x) {
 		if (x.Root == nullptr)
 			throw VoidValue("Myltiset is empty");
-		TMultiset tmp(x);
-		if (Root == x.Root) return tmp;
+
+		if (Root == x.Root) return *this;
 		clear();
-		return tmp;
+		for (Iterator it = x.begin(); it != x.end(); ++it)
+			insert(*it);
+		return *this;
 	}
 
 	TMultiset& operator= (std::initializer_list<value_type> il) {
 		if (Root) clear();
-		TMultiset tmp(il);
-		return tmp;
+		for (Iterator it = il.begin(); it != il.end(); ++it)
+			insert(*it);
+		return *this;
 	}
 
 	void insert(const value_type &val) {
