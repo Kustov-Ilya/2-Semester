@@ -11,14 +11,12 @@ struct VoidValue
 		: std::exception(message){}
 };
 
-template<class T>
-bool Less(T a, T b) {
-	return a > b;
-}
 
-template<class T, bool Compare(T a, T b) = Less<T>>
+
+template<class T, class Compare = std::less<>>
 class TMultiset {
 public:
+	using key_compare = Compare;
 	using value_type = T;
 	using size_type = size_t;
 	using pointer = value_type*;
@@ -47,6 +45,7 @@ public:
 			if (Right != nullptr)
 				delete Right;
 		}
+
 		friend class TMultiset;
 
 	};
@@ -61,8 +60,6 @@ public:
 
 		Iterator(Node &rhs)
 			:Ptr(&rhs), n(1) {}
-
-
 
 		Iterator(const Iterator &rhs)
 			:Ptr(rhs.Ptr), n(1) {}
@@ -176,7 +173,7 @@ public:
 			return (Ptr != rhs.Ptr);
 		}
 
-
+		friend class TMultiset;
 
 	};
 
@@ -184,19 +181,28 @@ private:
 	Node* Root;
 	Node* End;
 	size_type Size;
+	key_compare comp;
 
 	void InsertBranch(Node *rhs) {
 		if (rhs == nullptr) return;
-		if (!Root) {
+			if (!Root) {
 			rhs->Prev = nullptr;
 			Root = rhs;
 			return;
 		}
+		if (rhs->Nom == 0) {
+			Node *tmp = Root;
+			while (tmp->Right) tmp = tmp->Right;
+			tmp->Right = rhs;
+			rhs->Prev = tmp;
+			return;
+			}
 		Node* tmp = Root;
 		while (tmp) {
-			if (Compare(rhs->Data, tmp->Data)) {
+			if (comp(tmp->Data, rhs->Data)) {
 				if (tmp->Right&&tmp->Right != End) tmp = tmp->Right;
 				else {
+					DelEnd();
 					rhs->Prev = tmp;
 					tmp->Right = rhs;
 					SetEnd();
@@ -244,30 +250,45 @@ private:
 		End = nullptr;
 	}
 
+	Node * FindNode(const value_type& val) const{
+		if (Root == nullptr)
+			throw VoidValue("Myltiset is empty");
+		Node *tmp = Root;
+		while (tmp&&tmp->Nom!=0) {
+			if (!comp(val, tmp->Data) &&!comp(tmp->Data, val)) {
+				return tmp;
+			}
+			if (comp(tmp->Data, val)) tmp = tmp->Right;
+			else tmp = tmp->Left;
+		}
+		return nullptr;
+	}
 
 	using iterator = Iterator;
 	using const_iterator = const Iterator;
 
 public:
 
-	TMultiset()
-		:Root(nullptr), Size(0) {}
-	
-	TMultiset(const TMultiset& x)
+	explicit TMultiset(const key_compare& compare = key_compare())
 		:Root(nullptr), Size(0) {
+		comp = compare;
+	}
+	
+	TMultiset(const TMultiset& x, const key_compare& compare = key_compare())
+		:TMultiset() {
 		if (x.Root == nullptr)
 			throw VoidValue("Myltiset is empty");
 		InsertTree(x.Root);
 	}
 
-	TMultiset(std::initializer_list<value_type> il)
-		:Root(nullptr), Size(0) {
-		for (auto &val : il) Insert(val);
+	TMultiset(std::initializer_list<value_type> il, const key_compare& compare = key_compare())
+		:TMultiset() {
+		insert(il.begin(), il.end());
 	}
 
 	template<class InputIterator>
-	TMultiset(InputIterator first, InputIterator last)
-		: Root(nullptr), Size(0) {
+	TMultiset(InputIterator first, InputIterator last, const key_compare& compare = key_compare())
+		:TMultiset() {
 		for (first; first != last; ++first) Insert(*first);
 	}
 
@@ -278,15 +299,19 @@ public:
 	TMultiset& operator= (const TMultiset& x) {
 		if (x.Root == nullptr)
 			throw VoidValue("Myltiset is empty");
-	        clear();
-		TMultiset tmp(x);
-		return tmp;
+
+		if (Root == x.Root) return *this;
+		clear();
+		for (Iterator it = x.begin(); it != x.end(); ++it)
+			insert(*it);
+		return *this;
 	}
 
 	TMultiset& operator= (std::initializer_list<value_type> il) {
-	        clear();
-		TMultiset tmp(il);
-		return tmp;
+		if (Root) clear();
+		for (Iterator it = il.begin(); it != il.end(); ++it)
+			insert(*it);
+		return *this;
 	}
 
 	void insert(const value_type &val) {
@@ -300,7 +325,7 @@ public:
 			if (count(val) == 0) {
 				Node *tmp = new Node(val);
 				while (tmp) {
-					if (Compare(val, Fin->Data)) {
+					if (comp(Fin->Data,val)) {
 						if (Fin->Right&&Fin->Right != End) Fin = Fin->Right;
 						else {
 							DelEnd();
@@ -326,7 +351,7 @@ public:
 						Fin->Nom++;
 						return;
 					}
-					if (Compare(val, Fin->Data)) Fin = Fin->Right;
+					if (comp(Fin->Data, val)) Fin = Fin->Right;
 					else Fin = Fin->Left;
 				}
 			}
@@ -369,28 +394,18 @@ public:
 		}
 	}
 	
-	void print() {
-		if (Root == nullptr)
-			throw VoidValue("Myltiset is empty");
-		for (Iterator it = begin(); it != end(); ++it) {
-			std::cout << *it << " ";
-		}
-	}
-	
 	iterator find(const value_type &val) {
-		if (Root == nullptr)
-			throw VoidValue("Myltiset is empty");
-		for (Iterator i = begin(); i != end(); ++i)
-			if (*i == val) return i;
-		return end();
+		Node * tmp = FindNode(val);
+		if(tmp==nullptr) return end();
+		Iterator it(*tmp);
+		return it;
 	}
 	
 	const_iterator find(const value_type& val) const {
-		if (Root == nullptr)
-			throw VoidValue("Myltiset is empty");
-		for (Iterator i = begin(); i != end(); ++i)
-			if (*i == val) return i;
-		return end();
+		Node * tmp = FindNode(val);
+		if (tmp == nullptr) return end();
+		Iterator it(*tmp);
+		return it;
 	}
 
 	void clear() {
@@ -402,16 +417,10 @@ public:
 	}
 
 	
-	size_type count(const value_type& val) const {
-		if (Root == nullptr)
-			throw VoidValue("Myltiset is empty");
-		Node *tmp = Root;
-		while (tmp) {
-			if (tmp->Data == val) return tmp->Nom;
-			if (Compare(val, tmp->Data)) tmp = tmp->Right;
-			else tmp = tmp->Left;
-		}
-		return 0;
+	size_type count(const value_type& val) const{
+		Node * tmp = FindNode(val);
+		if (tmp == nullptr) return 0;
+		return tmp->Nom;
 	}
 
 	bool empty() const noexcept {
@@ -419,89 +428,81 @@ public:
 	}
 
 	iterator  erase(const_iterator position) {
-		bool FindEl = false;
-		Iterator it;
-		for (Iterator i = begin(); i != end(); ++i) {
-			if (i == position) {
-				FindEl = true;
-				break;
-			}
+		if (position.Ptr == nullptr) throw VoidValue("Iterator does not exist");
+		Iterator it = position;
+		Size--;
+		if (it == end()) return end();
+		++it;
+		if (position.Ptr->Nom > 1) {
+			position.Ptr->Nom--;
+			return it;
 		}
-
-		if (FindEl == true) {
-			it = position;
-			++it;
-			erase(*position);
+		Node *tmpL = nullptr;
+		Node *tmpR = nullptr;
+		if (position.Ptr->Right) {
+			tmpR = position.Ptr->Right;
+			position.Ptr->Right = nullptr;
 		}
-
+		if (position.Ptr->Left) {
+			tmpL = position.Ptr->Left;
+			position.Ptr->Left = nullptr;
+		}
+		if (position.Ptr == Root) {
+			delete Root;
+			Root = nullptr;
+		}
+		else {
+			if (comp(position.Ptr->Prev->Data, *position))
+				position.Ptr->Prev->Right = nullptr;
+			else position.Ptr->Prev->Left = nullptr;
+			position.Ptr->Prev = nullptr;
+			delete position.Ptr;
+		}
+		InsertBranch(tmpL);
+		InsertBranch(tmpR);
+		if (End == nullptr) SetEnd();
 		return it;
 	}
 	
 	size_type erase(const value_type& val) {
-		if (Root == nullptr) 
-			throw VoidValue("Myltiset is empty");
-		Node* tmp = Root;
-		while (tmp) {
-			if (tmp->Data == val) break;
-			if (Compare(val, tmp->Data)) tmp = tmp->Right;
-			else tmp = tmp->Left;
-		}
-		if (tmp == nullptr) return 0;
-		size_type Num = tmp->Nom;
-		Size -= Num;
-		DelEnd();
-		Node* Nod = nullptr;
-
-		if (tmp == Root) {
-			Node* Nod1 = nullptr;
-			if (tmp->Right) {
-				Nod = tmp->Right;
-				tmp->Right = nullptr;
-				Nod->Prev = nullptr;
-			}
-			if (tmp->Left) {
-				Nod = tmp->Left;
-				tmp->Left = nullptr;
-				Nod->Prev = nullptr;
-			}
-			delete tmp;
-			Root = nullptr;
-			InsertBranch(Nod);
-			InsertBranch(Nod1);
-		}
-		else
-		{
-			Node* Elem = tmp->Prev;
-			if (Elem->Right == tmp) Elem->Right = nullptr;
-			else Elem->Left = nullptr;
-			tmp->Prev = nullptr;
-			if (tmp->Right) {
-				Nod = tmp->Right;
-				tmp->Right = nullptr;
-				Nod->Prev = nullptr;
-				InsertBranch(Nod);
-			}
-
-			if (tmp->Left) {
-				Nod = tmp->Left;
-				tmp->Left = nullptr;
-				Nod->Prev = nullptr;
-				InsertBranch(Nod);
-			}
-		}
-		if (End == nullptr) SetEnd();
-		return Num;
-
+		Iterator it = find(val);
+		if (it == end()) return 0;
+		size_type Num = it.Ptr->Nom;
+		for (size_type i = Num; 0 < i; --i) {
+			Iterator delet = it;
+			++it;
+			erase(delet);
+		} 
+			return Num;
 	}
 
 	iterator  erase(const_iterator &first, const_iterator &last) {
+		Iterator delet;
+		if (begin() == first  && end() == last) {
+			clear();
+			return delet;
+		} 
 		Iterator it = first;
-		while (it != last) {
-			Iterator delet(it);
-			++it;
-			erase(delet);
+		if (end() != last)
+		{
+			while (it != last) {
+				delet = it;
+				it = erase(delet);
+			}
 		}
-		++it;
+		else
+		{
+			while (it!=end())
+			{
+				delet = it;
+				it = erase(delet);
+			}
+			if (Root->Nom == 0) {
+				delete End;
+				Root = nullptr;
+				End = nullptr;
+			}
+		}
 		return it;
 	}
 
@@ -513,7 +514,7 @@ public:
 
 	template<class InputIterator>
 	void insert(InputIterator first, InputIterator last) {
-		Iterator it = first;
+		InputIterator it = first;
 		for (it; it != last; ++it)
 			insert(*it);
 	}
@@ -530,17 +531,17 @@ public:
 
 	iterator lower_bound(const value_type& val)
 	{
-		if (Compare(val, End->Prev->Data)) return end();
-		iterator Iter = this->begin();
-		while (Compare(val, *Iter)) ++Iter;
+		if (comp(End->Prev->Data, val)) return end();
+		Iterator Iter = this->begin();
+		while (comp(*Iter, val)) ++Iter;
 		return Iter;
 	}
 
 	iterator upper_bound(const value_type& val)
 	{
-		if (Compare(val, End->Prev->Data)) return end();
-		iterator Iter(*End->Prev);
-		while (Compare(*Iter, val))
+		if (comp(End->Prev->Data, val)) return end();
+		Iterator Iter(*End->Prev);
+		while (comp(val, *Iter))
 			--Iter;
 		++Iter;
 		return Iter;
