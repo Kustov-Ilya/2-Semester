@@ -1,13 +1,12 @@
 #include<iostream>
 #include<vector>
-#include<set>
 
 template<class It, class Cmp>
 void qsort(It beg, It end, Cmp cmp)
 {
 	It Tend = end;
 	--end;
-	It point = partition<It, Cmp>(beg, end, cmp);
+	It point = sort<It, Cmp>(beg, end, cmp);
 	It next = point;
 	if(next!=end) ++next;
 
@@ -18,7 +17,7 @@ void qsort(It beg, It end, Cmp cmp)
 }
 
 template<class It, class Cmp>
-It partition(It beg, It end, Cmp cmp)
+It sort(It beg, It end, Cmp cmp)
 {
 	It pos = beg;
 	while (1){
