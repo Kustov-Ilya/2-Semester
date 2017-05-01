@@ -10,9 +10,9 @@ void qsort(It beg, It end, Cmp cmp)
 	It next = point;
 	if(next!=end) ++next;
 
-	if (std::distance(beg, point)>0)
+	if (std::distance(beg, point)>1)
 		qsort<It, Cmp>(beg, point, cmp);
-	if (std::distance(next, end)>0)
+	if (std::distance(next, end)>1)
 		qsort<It, Cmp>(next, Tend, cmp);
 }
 
