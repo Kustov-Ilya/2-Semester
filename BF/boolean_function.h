@@ -388,7 +388,7 @@ public:
 		size_type shift = Vector.size()/2;
 		while (shift != 0) {
 			size_t i = 0;
-			while (i + shift >= 16) {
+			while (i + shift <= Vector.size()) {
 				size_t j = shift;
 				for (i; j--; ++i) {
 					if (Vector[i] > Vector[shift + i]) return false;
