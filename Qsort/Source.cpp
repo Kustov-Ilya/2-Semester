@@ -1,51 +1,22 @@
-#include<iostream>
-#include<vector>
-
 template<class It, class Cmp>
 void qsort(It beg, It end, Cmp cmp)
 {
-	It Tend = end;
-	--end;
-	It point = sort<It, Cmp>(beg, end, cmp);
-	It next = point;
-	if(next!=end) ++next;
-
-	if (std::distance(beg, point)>0)
-		qsort<It, Cmp>(beg, point, cmp);
-	if (std::distance(next, end)>0)
-		qsort<It, Cmp>(next, Tend, cmp);
-}
-
-template<class It, class Cmp>
-It sort(It beg, It end, Cmp cmp)
-{
-	It pos = beg;
-	while (1){
-		It i = end;
-
-		while (cmp(*pos, *i) && (i > pos)) --i;
-
-		if (i != pos) std::swap(*pos, *i);
-		else
+		It prev = beg;
+		It tmp = prev++;
+		It next = end;
+		while (prev != next)
 		{
-			return pos;
-			break;
+			if (cmp(*prev, *tmp)) ++prev;
+			else{
+				while ((prev != --next) && cmp(*tmp, *next));
+				std::iter_swap(prev, next);
+			}
 		}
-
-		pos = i;
-		i = beg;
-		++i;
-
-		while (cmp(*i, *pos) && (i < pos)) ++i;
-
-		if (i != pos) std::swap(*pos, *i);
-		else
-		{
-			return pos;
-			break;
-		}
-		pos = i;
-	}
+		std::iter_swap(beg, --prev);
+		if (std::distance(beg, prev)>0)
+			qsort(beg, prev, cmp);
+		if (std::distance(next, end)>0)
+			qsort(next, end, cmp);
 }
 
 int main() {
