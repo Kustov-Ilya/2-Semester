@@ -1,5 +1,5 @@
 #pragma once
-#include "C:\Users\lenovo\Documents\cocos2d_Projects\MyGame\Classes\TMoveSprites.h"
+#include "TMoveSprites.h"
 class TMonsters :
 	public TMoveSprites
 {
