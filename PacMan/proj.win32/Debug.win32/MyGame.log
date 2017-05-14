@@ -1,0 +1,14 @@
+﻿  HelloWorldScene.cpp
+c:\users\lenovo\documents\cocos2d_projects\mygame\classes\gameover.h(16): warning C4996: 'cocos2d::LabelTTF': объявлен deprecate
+  c:\users\lenovo\documents\cocos2d_projects\mygame\cocos2d\cocos\2d\cclabelttf.h(67): note:  см. объявление "cocos2d::LabelTTF"
+c:\users\lenovo\documents\cocos2d_projects\mygame\classes\helloworldscene.cpp(371): warning C4996: 'cocos2d::LabelTTF::setString': объявлен deprecate
+  c:\users\lenovo\documents\cocos2d_projects\mygame\cocos2d\cocos\2d\cclabelttf.h(129): note:  см. объявление "cocos2d::LabelTTF::setString"
+c:\users\lenovo\documents\cocos2d_projects\mygame\classes\helloworldscene.cpp(372): warning C4996: 'cocos2d::Director::sharedDirector': объявлен deprecate
+  c:\users\lenovo\documents\cocos2d_projects\mygame\cocos2d\cocos\base\ccdirector.h(141): note:  см. объявление "cocos2d::Director::sharedDirector"
+c:\users\lenovo\documents\cocos2d_projects\mygame\classes\helloworldscene.cpp(376): warning C4996: 'cocos2d::LabelTTF::setString': объявлен deprecate
+  c:\users\lenovo\documents\cocos2d_projects\mygame\cocos2d\cocos\2d\cclabelttf.h(129): note:  см. объявление "cocos2d::LabelTTF::setString"
+c:\users\lenovo\documents\cocos2d_projects\mygame\classes\helloworldscene.cpp(377): warning C4996: 'cocos2d::Director::sharedDirector': объявлен deprecate
+  c:\users\lenovo\documents\cocos2d_projects\mygame\cocos2d\cocos\base\ccdirector.h(141): note:  см. объявление "cocos2d::Director::sharedDirector"
+  MyGame.vcxproj -> C:\Users\lenovo\Documents\cocos2d_Projects\MyGame\proj.win32\Debug.win32\MyGame.exe
+  MyGame.vcxproj -> C:\Users\lenovo\Documents\cocos2d_Projects\MyGame\proj.win32\Debug.win32\MyGame.pdb (Full PDB)
+  Скопировано файлов: 0.
