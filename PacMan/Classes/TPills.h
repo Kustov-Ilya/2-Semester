@@ -8,7 +8,7 @@ private:
 public:
 	TPills();
 	TPills(const float &x, const float &y, const int &len, const int &hei, cocos2d::Sprite * Pic, const size_t &typ);
-	virtual const size_t GetType();
+	const size_t GetType();
 	virtual ~TPills();
 };
 

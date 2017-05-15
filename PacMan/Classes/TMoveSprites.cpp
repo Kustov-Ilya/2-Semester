@@ -63,8 +63,7 @@ float TMoveSprites::GetTimer()
 {
 	return 0.0f;
 }
-
-void TMoveSprites::Add30Sec()
+void  TMoveSprites::SetTimer(const float &tim)
 {
 }
 

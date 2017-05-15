@@ -297,10 +297,18 @@ bool isfight()
 void Remov(std::vector<TObject*>::iterator & it)
 {
 	if ((*it)->GetType() == 1) {
-		GL_SC->Pacman.Get()->at(0)->ChangeIsHunt();
+		TObject* pac = GL_SC->Pacman.Get()->at(0);
+		if (pac->GetTimer() != 0) {
+			pac->SetTimer(pac->GetTimer() + 30);
+		}
+		else {
+			pac->SetTimer(30);
+			pac->ChangeIsHunt();
+		}
 	}
 	GL_SC->removeChild((*it)->GetPict());
 	GL_SC->Food.Get()->erase(it);
+	
 }
 
 bool RemFight(std::vector<TObject*>::iterator & it)
@@ -335,7 +343,14 @@ void HelloWorld::Update(float dt)
 		}
 		return;
 	}
-	isfight();
+	if(isfight()) return;
+	TObject* pac = GL_SC->Pacman.Get()->at(0);
+	if (round(pac->GetTimer()*10)/10. == 0.3) {
+		pac->ChangeIsHunt();
+		pac->SetTimer(0);
+	}
+	else if (pac->GetTimer() > 0.3) 
+		pac->SetTimer(pac->GetTimer() - 0.3);
 	for (auto it = GL_SC->Monsters.Get()->begin(); it != GL_SC->Monsters.Get()->end(); ++it) {
 		//1==up
 		//2==down

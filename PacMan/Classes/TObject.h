@@ -23,13 +23,15 @@ public:
 	virtual void MDown();
 	virtual void MUp();
 	virtual float GetTimer();
-	virtual void Add30Sec();
+	virtual void SetTimer(const float &tim);
 	virtual const size_t GetDirect();
 	virtual void SetDirect(const size_t &napr);
 	virtual const size_t GetIsHunter();
 	virtual void ChangeIsHunt();
+	virtual void setSpeed(const float &sp);
 	virtual const size_t GetType();
 	cocos2d::Sprite* GetPict();
+	void SetPict(std::string &rhs);
 
 	void SetXPos(const float &x);
 

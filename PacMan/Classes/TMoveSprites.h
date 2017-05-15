@@ -19,7 +19,7 @@ public:
 	virtual const size_t GetIsHunter();
 	virtual void ChangeIsHunt();
 	virtual float GetTimer();
-	virtual void Add30Sec();
+	virtual void SetTimer(const float &tim);
 	const size_t GetType();
 	void setSpeed(const float &sp);
 	virtual ~TMoveSprites();

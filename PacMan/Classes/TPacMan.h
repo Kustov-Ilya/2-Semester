@@ -10,7 +10,7 @@ public:
 	TPacMan();
 	TPacMan(const float &x, const float &y);
 	float GetTimer();
-	void Add30Sec();
+	void SetTimer(const float &tim);
 	const size_t GetIsHunter();
 	void ChangeIsHunt();
 	~TPacMan();

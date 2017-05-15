@@ -42,8 +42,7 @@ float TObject::GetTimer()
 {
 	return 0.0f;
 }
-
-void TObject::Add30Sec()
+void TObject::SetTimer(const float &tim)
 {
 }
 
@@ -65,6 +64,10 @@ void TObject::ChangeIsHunt()
 {
 }
 
+void TObject::setSpeed(const float & sp)
+{
+}
+
 const size_t TObject::GetType()
 {
 	return size_t();
@@ -73,6 +76,11 @@ const size_t TObject::GetType()
 cocos2d::Sprite * TObject::GetPict()
 {
 	return Pict;
+}
+
+void TObject::SetPict(std::string & rhs)
+{
+	Pict = cocos2d::Sprite::create("Enemy1.png");
 }
 
 void TObject::SetXPos(const float &x)

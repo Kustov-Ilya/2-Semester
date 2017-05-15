@@ -18,10 +18,12 @@ float TPacMan::GetTimer()
 	return timer;
 }
 
-void TPacMan::Add30Sec()
+void TPacMan::SetTimer(const float & tim)
 {
-	timer += 30;
+	timer = tim;
 }
+
+
 
 
 const size_t TPacMan::GetIsHunter()
