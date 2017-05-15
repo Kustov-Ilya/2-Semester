@@ -345,7 +345,7 @@ void HelloWorld::Update(float dt)
 		switch (napr)
 		{
 		case 1:
-			if (isClash((*it), (*it)->GetDirect())) {
+			if (isClash((*it), 1)) {
 				if (!isClash((*it), 4)) {
 					(*it)->MLeft();
 					(*it)->SetDirect(4);
@@ -357,10 +357,27 @@ void HelloWorld::Update(float dt)
 					break;
 				}
 			}
+			else {
+				size_t i = rand() % 2;
+				if (i == 0) {
+					if (!isClash(*it, 3)) {
+						(*it)->MRight();
+						(*it)->SetDirect(3);
+						break;
+					}
+				}
+				else {
+					if (!isClash(*it, 4)) {
+						(*it)->MLeft();
+						(*it)->SetDirect(4);
+						break;
+					}
+				}
 			(*it)->MUp();
 			break;
+			}
 		case 2:
-			if (isClash((*it), (*it)->GetDirect())) {
+			if (isClash((*it), 2)) {
 				if (!isClash((*it), 3)) {
 					(*it)->MRight();
 					(*it)->SetDirect(3);
@@ -372,10 +389,27 @@ void HelloWorld::Update(float dt)
 					break;
 				}
 			}
+			else {
+				size_t i = rand() % 2;
+				if (i == 0) {
+					if (!isClash(*it, 4)) {
+						(*it)->MLeft();
+						(*it)->SetDirect(4);
+						break;
+					}
+				}
+				else {
+					if (!isClash(*it, 3)) {
+						(*it)->MRight();
+						(*it)->SetDirect(3);
+						break;
+					}
+				}
 			(*it)->MDown();
 			break;
+			}
 		case 3:
-			if (isClash((*it), (*it)->GetDirect())) {
+			if (isClash((*it), 3)) {
 				if (!isClash((*it), 1)) {
 					(*it)->MUp();
 					(*it)->SetDirect(1);
@@ -387,10 +421,27 @@ void HelloWorld::Update(float dt)
 					break;
 				}
 			}
+			else {
+				size_t i = rand() % 2;
+				if (i == 0) {
+					if (!isClash(*it, 1)) {
+						(*it)->MUp();
+						(*it)->SetDirect(1);
+						break;
+					}
+				}
+				else {
+					if (!isClash(*it, 2)) {
+						(*it)->MDown();
+						(*it)->SetDirect(2);
+						break;
+					}
+				}
 			(*it)->MRight();
 			break;
+			}
 		case 4:
-			if (isClash((*it), (*it)->GetDirect())) {
+			if (isClash((*it), 4)) {
 				if (!isClash((*it), 2)) {
 					(*it)->MDown();
 					(*it)->SetDirect(2);
@@ -402,8 +453,25 @@ void HelloWorld::Update(float dt)
 					break;
 				}
 			}
+			else {
+				size_t i = rand() % 2;
+				if (i == 0) {
+					if (!isClash(*it, 2)) {
+						(*it)->MDown();
+						(*it)->SetDirect(2);
+						break;
+					}
+				}
+				else {
+					if (!isClash(*it, 1)) {
+						(*it)->MUp();
+						(*it)->SetDirect(1);
+						break;
+					}
+				}
 			(*it)->MLeft();
 			break;
+			}
 		}
 	}
 }
