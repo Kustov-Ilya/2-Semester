@@ -11,12 +11,6 @@ TWall::TWall(const float &x, const float &y)
 {
 }
 
-const size_t TWall::GetType()
-{
-	return size_t();
-}
-
-
 
 
 TWall::~TWall()

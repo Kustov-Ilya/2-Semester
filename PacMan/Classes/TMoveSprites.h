@@ -10,10 +10,10 @@ private:
 public:
 	TMoveSprites();
 	TMoveSprites(const float &x, const float &y, const int &len, const int &hei, cocos2d::Sprite * Pic, const float &sp);
-	virtual void MRight();
-	virtual void MLeft();
-	virtual void MDown();
-	virtual void MUp();
+	void MRight();
+	void MLeft();
+	void MDown();
+	void MUp();
 	virtual const size_t GetDirect()=0;
 	virtual void SetDirect(const size_t &napr) =0;
 	virtual const size_t GetIsHunter() = 0;

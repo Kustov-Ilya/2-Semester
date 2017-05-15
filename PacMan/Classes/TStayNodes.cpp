@@ -11,6 +11,11 @@ TStayNodes::TStayNodes(const float x, const float y, const int len, const int he
 {
 }
 
+const size_t TStayNodes::GetType()
+{
+	return size_t();
+}
+
 
 TStayNodes::~TStayNodes()
 {

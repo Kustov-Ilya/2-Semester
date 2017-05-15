@@ -121,7 +121,7 @@ bool HelloWorld::init()
     // create and initialize a labe
 	
 	
-	this->schedule(schedule_selector(HelloWorld::Update), 0.5);
+	this->schedule(schedule_selector(HelloWorld::Update), 0.3);
 
 
 	cocos2d::EventListenerKeyboard * listener = cocos2d::EventListenerKeyboard::create();
@@ -138,11 +138,10 @@ bool HelloWorld::init()
 
 void Movement(cocos2d::EventKeyboard::KeyCode code, cocos2d::Event * event)
 {
-	
-	TObject *pac = GL_SC->Pacman.Get()->at(0);
 	if (GL_SC == nullptr)
 		return;
-
+	if (GL_SC->Pacman.Get()->empty()) return;
+	TObject *pac = GL_SC->Pacman.Get()->at(0);
 	float XPac = pac->GetCoord().first;
 	float YPac = pac->GetCoord().second;
 	if(isfight()) return;
@@ -336,6 +335,7 @@ void HelloWorld::Update(float dt)
 		}
 		return;
 	}
+	isfight();
 	for (auto it = GL_SC->Monsters.Get()->begin(); it != GL_SC->Monsters.Get()->end(); ++it) {
 		//1==up
 		//2==down

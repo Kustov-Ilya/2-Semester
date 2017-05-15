@@ -6,7 +6,6 @@ class TWall :
 public:
 	TWall();
 	TWall(const float &x, const float &y);
-	const size_t GetType();
 	~TWall();
 };
 
