@@ -27,10 +27,3 @@ void TMonsters::SetDirect(const size_t &napr)
 	direction = napr;
 }
 
-const size_t TMonsters::GetIsHunter()
-{
-	return size_t();
-}
-
-void TMonsters::ChangeIsHunt(){}
-

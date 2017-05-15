@@ -11,7 +11,5 @@ public:
 	~TMonsters();
 	const size_t GetDirect();
 	void SetDirect(const size_t &napr);
-	const size_t GetIsHunter();
-	void ChangeIsHunt();
 };
 

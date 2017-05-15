@@ -18,15 +18,17 @@ public:
 
 	const std::pair<int, int> GetSize();
 
-	virtual void MRight()=0;
-	virtual void MLeft()=0;
-	virtual void MDown()=0;
-	virtual void MUp()=0;
-	virtual const size_t GetDirect()=0;
-	virtual void SetDirect(const size_t &napr) =0;
-	virtual const size_t GetIsHunter()=0;
-	virtual void ChangeIsHunt()=0;
-	virtual const size_t GetType()=0;
+	virtual void MRight();
+	virtual void MLeft();
+	virtual void MDown();
+	virtual void MUp();
+	virtual float GetTimer();
+	virtual void Add30Sec();
+	virtual const size_t GetDirect();
+	virtual void SetDirect(const size_t &napr);
+	virtual const size_t GetIsHunter();
+	virtual void ChangeIsHunt();
+	virtual const size_t GetType();
 	cocos2d::Sprite* GetPict();
 
 	void SetXPos(const float &x);

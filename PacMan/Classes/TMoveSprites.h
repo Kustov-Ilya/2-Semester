@@ -14,10 +14,12 @@ public:
 	void MLeft();
 	void MDown();
 	void MUp();
-	virtual const size_t GetDirect()=0;
-	virtual void SetDirect(const size_t &napr) =0;
-	virtual const size_t GetIsHunter() = 0;
-	virtual void ChangeIsHunt() = 0;
+	virtual const size_t GetDirect();
+	virtual void SetDirect(const size_t &napr);
+	virtual const size_t GetIsHunter();
+	virtual void ChangeIsHunt();
+	virtual float GetTimer();
+	virtual void Add30Sec();
 	const size_t GetType();
 	void setSpeed(const float &sp);
 	virtual ~TMoveSprites();
